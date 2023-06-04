@@ -17,8 +17,22 @@ router.post("/notes", (req, res) => {
         title,
         text,
         id: uuid(),
-    }
-  }
+    };
+    db.push(newNote);
+    const noteString = JSON.stringify(db);
+    fs.writeFile('./db/db.json', noteString, (err) => err ? console.log(err) : console.log(`${newNote.title} has been saved!`));
+
+    const response = {
+        status: "success",
+        body: newNote,
+    };
+
+    console.log(response);
+    res.status(201).json(response);
+  } else {
+    res.status(500).json('Error in posting note!');  
+};
+
 });
 
 module.exports = router;
